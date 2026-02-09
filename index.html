@@ -3,22 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
     <title>Dog API</title>
   </head>
   <body>
-    <h1>Welcome to Dogs of the planet</h1>
-    <nav>
-      <a href="index.html">All Dogs</a>
-      
-      <a href="breeds.html">Breeds Detail</a>
-    </nav>
+    <header>
+      <h1>Welcome to Dogs of the planet</h1>
+      <nav>
+        <a href="index.html">All Dogs</a>
 
-    <div>
-       <img src="" alt="dog-image">
-       <br>
-       <button id="load-dog">Load New Dog</button>
-    
-    </div>
-    
+        <a href="breeds.html">Breeds Detail</a>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Random Dog</h2>
+        <button id="load-dog">Load New Dog</button>
+        
+        <div id="dog-container">
+         
+        
+        </div>
+
+        <p id="error-message" class="error"></p>
+      </section>
+    </main>
   </body>
 </html>
