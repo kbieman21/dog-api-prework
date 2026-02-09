@@ -1,25 +1,41 @@
 
+
+
+const button = document.getElementById("load-dog");
+const dogContainer = document.getElementById("dog-container");
+const breedContainer = document.getElementById("breeds-container");
+
+
+button.addEventListener("click", fetchAnyDog);
+
+
+
+
+
 async function fetchAnyDog() {
+    console.log("Fetching dog...");
     try {
         const res = await fetch(
-            "https://api.thedogapi.com/v1", {headers: {"dog-api-key": API_KEY}}
+            "https://api.thedogapi.com/v1/images/search", {headers: {"x-api-key": API_KEY}}
         );
 
         const data = await res.json();
-        displayDog(data[0])
-    } catch (error) {
-        showError("Failed to load dog image");
-    }
-}
+       
+          console.log("API response:", data);
 
-
-
-async function fetchSpecificBreed() {
-    try {
-        const res = await fetch(
-             "https://api.thedogapi.com/v1", {headers: {"dog-api-key": API_KEY}}
-        )
-    } catch (error) {
+           displayDog(data[0])
         
+    } catch (error) {
+        //showError("Failed to load dog image");
+        console.error("Failed to load dog", error);
     }
 }
+
+
+
+
+
+function displayDog(dog){
+    dogContainer.innerHTML = `<img src="${dog.url}" alt="Random dog" />`;
+}
+
