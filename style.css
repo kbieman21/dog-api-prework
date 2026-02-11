@@ -85,3 +85,5 @@ button:hover {
   margin-top: 1rem;
   font-weight: bold;
 }
+
+img { max-width: 300px; height: auto; cursor: pointer; }

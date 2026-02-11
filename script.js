@@ -1,64 +1,59 @@
+const API_KEY = "live_wfpvyRj5cldavlggdnNnxTose0qr5tCFXU9iMDSsxZETn7tdOXoPJUfkNIlccdIZ";
 
-const button = document.getElementById("load-dog");
-const dogContainer = document.getElementById("dog-container");
+const breedSelect = document.getElementById("breed-select");
+const dogArea = document.getElementById("dog-area");
 
+let breeds = [];
 
+console.log("hello")
 
-button.addEventListener("click", fetchAnyDog);
-
-
-async function fetchAnyDog() {
-    console.log("Fetching dog...");
+//load all breeds once
+async function loadBreeds() {
     try {
-        const res = await fetch(
-            "https://api.thedogapi.com/v1/images/search?has_breeds=1&limit=1", {headers: {"x-api-key": API_KEY}}
-        );
+        const res = await fetch("https://api.thedogapi.com/v1/breeds", {headers: {"x-api-key": API_KEY}});
 
-        const data = await res.json();
-       
-          console.log("API response:", data);
+        //const data = await res.json();
+        breeds = await res.json();
+        console.log(breeds);
 
-           displayDog(data[0])
-        
+        breedSelect.innerHTML = `<option value="">Choose a breed</option>` + 
+          breeds.map(b => `<option value="${b.id}">${b.name}</option>`).join("");
     } catch (error) {
-        showError("Failed to load dog image");
-        //console.error("Failed to load dog", error);
+        document.getElementById("error-message").textContent = "Couldn't Load breeds"
     }
+    
 }
 
+//when breed selected, fetch image
+breedSelect.addEventListener("change", async function() {
+    const breedId = this.value;
+    dogArea.innerHTML = "Loading image";
 
-function displayDog(dog) {
-  const breed = dog.breeds && dog.breeds.length > 0
-    ? dog.breeds[0]
-    : null;
+    if(!breedId) return;
 
-  if (!breed) {
-    dogContainer.innerHTML = `
-      <div class="dog-card">
-        <img src="${dog.url}" alt="Random dog" />
-        <p>Breed information not available</p>
-      </div>
-    `;
-    return;
-  }
+    try {
+        const res = await fetch(`https://api.thedogapi.com/v1/images/search?breed_ids=${breedId}&limit=1`,
+          { headers: { "x-api-key": API_KEY }});
 
-  dogContainer.innerHTML = `
-    <div class="dog-card">
-      <img src="${dog.url}" alt="${breed.name}" />
-      <h3>${breed.name}</h3>
-      <p><strong>Temperament:</strong> ${breed.temperament}</p>
-      <p><strong>Life Span:</strong> ${breed.life_span}</p>
-      <p><strong>Origin:</strong> ${breed.origin || "Unknown"}</p>
-       <a href="breeds.html?breedId=${breed.id}">
-        View more about ${breed.name}
-      </a>
-    </div>
-  `;
+          const data = await res.json();
+          const img = data[0];
+
+          dogArea.innerHTML = `
+          <img src="${img.url}" 
+               alt="${breeds.find(b => b.id == breedId)?.name}" 
+               onclick="goToDetails(${breedId})" />
+        `;
+    } catch (error) {
+        dogArea.innerHTML = "No image found for this breed."
+    }
+});
+
+//when click the image go to the detail page
+function goToDetails(breedId){
+    window.location.href = `breeds.html?breedId=${breedId}`;
 }
 
+// Start
+    loadBreeds();
 
-function showError(message) {
-  document.getElementById("error-message").textContent = message;
-}
-
-
+//
