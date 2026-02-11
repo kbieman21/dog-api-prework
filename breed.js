@@ -10,6 +10,7 @@ if(!breedId){
 }
 
 async function loadBreed(id) {
+   console.log("Fetching breeds ...");
   try {
     //get breed data
     const breedRes = await fetch("https://api.thedogapi.com/v1/breeds", {
