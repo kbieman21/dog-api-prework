@@ -1,37 +1,46 @@
+const API_KEY = "live_wfpvyRj5cldavlggdnNnxTose0qr5tCFXU9iMDSsxZETn7tdOXoPJUfkNIlccdIZ";
 
-const breedContainer = document.getElementById("breeds-container");
-const button = document.getElementById("load-breed");
+const urlParams = new URLSearchParams(window.location.search);
+const breedId = urlParams.get("breedId");
 
-button.addEventListener("click", fetchSpecificBreed);
+if(!breedId){
+  document.body.innerHTML = "<p>No breed selected.</p>";
+}else{
+  loadBreed(breedId)
+}
 
-async function fetchSpecificBreed() {
-    try {
-         console.log("Fetching breeds...");
-        const res = await fetch(
-            "https://api.thedogapi.com/v1/breeds", {headers: {"x-api-key": API_KEY}}
-        )
-        const data = await res.json();
-        
-        console.log(data);
+async function loadBreed(id) {
+  try {
+    //get breed data
+    const breedRes = await fetch("https://api.thedogapi.com/v1/breeds", {
+          headers: { "x-api-key": API_KEY }});
 
-        displayBreeds(data)
-    } catch (error) {
-        showError("Failed to load breeds");
-        //console.error("Failed to load dog", error);
+    const breeds = await breedRes.json();
+    const breed = breeds.find(b => b.id == id);
+
+    if(!breed){
+      document.body.innerHTML = "<p>Breed not found.</p>";
+      return;
     }
-}
 
+    //get image
+    const imgRes = await fetch(`https://api.thedogapi.com/v1/images/search?breed_ids=${id}&limit=1`,
+          { headers: { "x-api-key": API_KEY }});
 
-function displayBreeds(breeds){
-   //breedContainer.innerHTML = `<img src="${dog.url}" alt="Random dog" />`;
-   //breedContainer.innerHTML = `<p>Some detail</p>`
-   breedContainer.innerHTML = breeds.slice(0, 10).map(breed => `<div class="breed-card">
-          <h3>${breed.name}</h3>
-          <p><strong>Temperament:</strong> ${breed.temperament || "N/A"}</p>
-          <p><strong>Life Span:</strong> ${breed.life_span}</p>
-        </div>`).join("");
-}
+          const imgData = await imgRes.json();
+          const imgUrl = imgData[0]?.url || "Image not found";
 
-function showError(message) {
-  document.getElementById("error-message").textContent = message;
+          document.getElementById("breed-name").textContent = breed.name;
+          document.getElementById("breed-img").src = imgUrl;
+          document.getElementById("breed-img").alt = breed.name;
+
+          document.getElementById("breed-info").innerHTML = `
+          <p><strong>Temperament:</strong> ${breed.temperament || "Unknown"}</p>
+          <p><strong>Life Span:</strong> ${breed.life_span || "Unknown"}</p>
+          <p><strong>Origin:</strong> ${breed.origin || "Unknown"}</p>
+          <p><strong>Breed Group:</strong> ${breed.breed_group || "Not listed"}</p>
+        `;
+  } catch (error) {
+    document.getElementById("breed-info").innerHTML = "<p>Failed to load details.</p>";
+  }
 }
