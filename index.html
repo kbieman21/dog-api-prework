@@ -5,29 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
-    <title>Dog API</title>
+    <title>All Breeds</title>
   </head>
   <body>
     <header>
       <h1>Dog Breeds Explorer</h1>
-      <!-- <nav>
-        <a href="index.html">All Breeds</a>
-
-        <a href="breeds.html">Breeds Detail</a>
-      </nav> -->
     </header>
 
     <main>
       <section>
-       <h2>Select a Breed</h2>
-       <select name="" id="breed-select">
-        <option value="">Loading breeds ...</option>
-       </select>
-       <div id="dog-area">
+        <div id="mixContainer">
+        <input type="text" id="search" placeholder="Search breeds..." />
+        <a href="favorites.html">My Favorite</a>
+        </div>
 
-       </div>
+        <h2>Select a Breed to See Details</h2>
+       
+        
 
-       <p>Click the image to see the detail</p>
+        <div id="breed-grid"></div>
+
         <p id="error-message" class="error"></p>
       </section>
     </main>

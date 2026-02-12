@@ -87,3 +87,39 @@ button:hover {
 }
 
 img { max-width: 300px; height: auto; cursor: pointer; }
+
+/*=======================================*/
+#breed-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+#favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: 65%;
+  cursor: pointer;
+}
+
+#mixContainer{
+  width: 100%;
+}
+
+
+.fav-btn.active {
+  background-color: red;
+  color: white;
+}
+
