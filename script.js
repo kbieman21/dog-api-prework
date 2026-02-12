@@ -1,28 +1,55 @@
-const API_KEY =
-  "live_wfpvyRj5cldavlggdnNnxTose0qr5tCFXU9iMDSsxZETn7tdOXoPJUfkNIlccdIZ";
-
 const breedSelect = document.getElementById("breed-select");
 const dogArea = document.getElementById("dog-area");
 
-let breeds = [];
+// Helper to convert breed name to dog.ceo slug (handles sub-breeds like "german shepherd" → "german/shepherd")
+function getBreedSlug(name) {
+  const lower = name.toLowerCase();
+  // Common sub-breed mappings (add more as you test)
+  const subBreedMap = {
+    "german shepherd": "german/shepherd",
+    "australian shepherd": "australian/shepherd",
+    "bernese mountain dog": "mountain/bernese",
+    "st. bernard": "stbernard",  // no dot, no space
+    "pembroke welsh corgi": "corgi/welsh-pembroke",
+    "cardigan welsh corgi": "corgi/welsh-cardigan",
+    //"bulldog french": "bulldog/french" 
+  };
+
+  if (subBreedMap[lower]) return subBreedMap[lower];
+
+  // Default: replace spaces with / (for most sub-breeds)
+  return lower.replace(/ /g, "/");
+}
 
 //load all breeds once
 async function loadBreeds() {
   console.log("Fetching breeds ...");
 
   try {
-    const res = await fetch("https://api.thedogapi.com/v1/breeds", {
-      headers: { "x-api-key": API_KEY },
-    });
+    const breedsRes = await fetch("https://dog.ceo/api/breeds/list/all");
 
-    //const data = await res.json();
-    breeds = await res.json();
-    console.log(breeds);
+    if(!breedsRes.ok) throw new Error(`HTTP ${breedsRes.status}`);
+
+    const {message:breedsObj, status} = await breedsRes.json();
+
+    console.log("status" ,status);
+     console.log("message" ,breedsObj[0]);
+    
+    if(status !== "success") throw new Error("API Error");
+
+    const breedList = Object.keys(breedsObj).map(name => ({name, slug: getBreedSlug(name)}));
+    console.log("breed list", breedList);
+
+    // sort by display name
+    breedList.sort((a,b) => a.name.localeCompare(b.name));
 
     breedSelect.innerHTML =
       `<option value="">Choose a breed</option>` +
-      breeds.map((b) => `<option value="${b.id}">${b.name}</option>`).join("");
+      breedList.map((b) => `<option value="${b.slug}">${b.name}</option>`).join("");
+
+      console.log(`Loaded ${breedList.length} breeds`);
   } catch (error) {
+    console.error("Breed load failed:", error);
     document.getElementById("error-message").textContent =
       "Couldn't Load breeds";
   }
@@ -30,42 +57,39 @@ async function loadBreeds() {
 
 //when breed selected, fetch image
 breedSelect.addEventListener("change", async function () {
-  const breedId = this.value;
-  dogArea.innerHTML = "Loading image";
+  const slug = this.value;
+  dogArea.innerHTML = ""; // clear
 
-  console.log("Selected Breed ID:", breedId); // ← Should be 74 for Dalmatian
-  console.log(
-    "Fetch URL:",
-    `https://api.thedogapi.com/v1/images/search?breed_ids=${breedId}&limit=1`,
-  );
+  if (!slug) return;
 
-  if (!breedId) return;
+  dogArea.innerHTML = "<p>Loading image...</p>";
 
-  try {
-    const res = await fetch(
-      `https://api.thedogapi.com/v1/images/search?breed_ids=${breedId}&limit=1`,
-      { headers: { "x-api-key": API_KEY } },
-    );
+ 
+    try {
+        const imgRes = await fetch(`https://dog.ceo/api/breed/${slug}/images/random`);
 
-    const data = await res.json();
+        if (!imgRes.ok){
+            throw new Error(`Image fetch failed: ${imgRes.status}`);
+        }
 
-    console.log("API Response Breed Name:", data[0]?.breeds[0]?.name);  // ← Should say "Dalmatian"
-  console.log("Image URL:", data[0]?.url);  // ← Copy this URL and paste in browser to view
-    const img = data[0];
+        const { message: url, status } = await imgRes.json();
+        if (status !== "success" || !url) throw new Error("No image");
 
-    dogArea.innerHTML = `
-          <img src="${img.url}" 
-               alt="${breeds.find((b) => b.id == breedId)?.name}" 
-               onclick="goToDetails(${breedId})" />
-        `;
-  } catch (error) {
-    dogArea.innerHTML = "No image found for this breed.";
-  }
+        dogArea.innerHTML = `<img src="${url}" alt="${slug.replace("/", " ")}" onclick="goToDetails('${encodeURIComponent(slug)}')"/>`;
+
+
+
+       
+    } catch (error) {
+        console.error("Image error:", error);
+        dogArea.innerHTML = `<p style="color:red;">No image available right now. Try another breed.</p>`;
+    }
+ 
 });
 
 //when click the image go to the detail page
-function goToDetails(breedId) {
-  window.location.href = `breeds.html?breedId=${breedId}`;
+function goToDetails(slug) {
+  window.location.href = `breeds.html?breed=${encodeURIComponent(slug)}`;
 }
 
 // Start
