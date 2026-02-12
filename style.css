@@ -17,25 +17,16 @@ header {
 
 
 /* Navigation */
-nav {
+#mixContainer {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 85.5rem;
 }
 
-nav a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
 
 /* Main content */
 main {
-  max-width: 800px;
+  max-width: 1800px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -63,20 +54,6 @@ button {
 
 button:hover {
   background-color: #2980b9;
-}
-
-/* Dog container */
-#dog-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#dog-container img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Error message */
@@ -113,13 +90,7 @@ img { max-width: 300px; height: auto; cursor: pointer; }
   cursor: pointer;
 }
 
-#mixContainer{
-  width: 100%;
-}
 
 
-.fav-btn.active {
-  background-color: red;
-  color: white;
-}
+
 

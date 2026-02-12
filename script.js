@@ -63,7 +63,13 @@ searchInput.addEventListener("input", function () {
 
   const filtered = allBreeds.filter((b) => b.name.toLowerCase().includes(term));
 
-  displayBreeds(filtered);
+  if(filtered.length ===0){
+    breedGrid.innerHTML = "<p>No breeds found.</p>";
+  }else{
+     displayBreeds(filtered);
+  }
+
+ 
 });
 
 function toggleFavorite(slug, name, image) {

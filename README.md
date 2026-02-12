@@ -1,6 +1,6 @@
 # Dog Breeds Explorer
 
-A simple web app using TheDogAPI to browse dog breeds and view details.
+A simple web app using TheDogAPI and dog.ceo/dog-api to browse dog breeds and view details.
 
 ## Features
 - Select a breed from dropdown populated from the Dog CEO API
@@ -22,7 +22,7 @@ A simple web app using TheDogAPI to browse dog breeds and view details.
 4. Open `index.html` in any modern browser (Chrome, Firefox, etc.) – no server needed.
 
 
-Note: API key is required for breed data. Without it, images may load but breeds and detail info won't.
+Note: API key is required for breed data in the TheDogAPI. Without it, images may load but breeds and detail info won't.
 
 ## Endpoints Used
 - GET `https://dog.ceo/api/breeds/list/all` and `https://dog.ceo/api/breed/${slug}/images/random` - for breed list and random images
