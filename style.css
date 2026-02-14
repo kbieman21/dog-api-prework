@@ -1,8 +1,8 @@
 
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f4f6f8;
+ 
+  background-color: "white";
   color: #333;
   line-height: 1.6;
 }
@@ -20,13 +20,13 @@ header {
 #mixContainer {
   display: flex;
   justify-content: center;
-  gap: 85.5rem;
+  gap: 65.5rem;
 }
 
 
 /* Main content */
 main {
-  max-width: 1800px;
+  max-width: 1500px;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -44,7 +44,6 @@ section {
 button {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
-  border: none;
   border-radius: 5px;
   background-color: #3498db;
   color: #fff;
@@ -89,8 +88,3 @@ img { max-width: 300px; height: auto; cursor: pointer; }
   height: 65%;
   cursor: pointer;
 }
-
-
-
-
-
