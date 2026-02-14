@@ -3,11 +3,10 @@
 A simple web app using TheDogAPI and dog.ceo/dog-api to browse dog breeds and view details.
 
 ## Features
-- Select a breed from dropdown populated from the Dog CEO API
-- Displays a random, accurate image of the chosen breed (using Dog CEO API)
+- Select a breed from the list populated from the Dog CEO API
 - Clicking the image navigates to a details page showing breed metadata
 - Breed details (temperament, life span, origin, breed group, etc.) fetched from The Dog API
-- Clean navigation between the main page and breed details page
+- Clean navigation between the main page and breed details page and favorite page
 - Responsive and user-friendly design with error handling
 
 ## Technologies

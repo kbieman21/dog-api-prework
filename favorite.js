@@ -16,4 +16,9 @@ function loadFavorites() {
   `).join("");
 }
 
+//when click the image go to the detail page
+function goToDetails(slug) {
+  window.location.href = `breeds.html?breed=${encodeURIComponent(slug)}`;
+}
+
 loadFavorites();

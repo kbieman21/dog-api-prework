@@ -113,10 +113,6 @@ function getBreedSlug(name) {
   return lower.replace(/ /g, "/");
 }
 
-function isFavorite(slug) {
-  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  return favorites.some(f => f.slug === slug);
-}
 
 
 // Start
