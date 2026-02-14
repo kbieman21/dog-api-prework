@@ -14,7 +14,7 @@ async function loadBreeds() {
 
     //const breedNamesV = Object.values(breedsObj);
 
-    console.log(breedNames);
+    console.log("names", breedNames);
     //console.log(breedNamesV);
 
     allBreeds = breedNames.map((name) => ({

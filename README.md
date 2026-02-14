@@ -21,6 +21,10 @@ A simple web app using TheDogAPI and dog.ceo/dog-api to browse dog breeds and vi
 4. Open `index.html` in any modern browser (Chrome, Firefox, etc.) – no server needed.
 
 
+# public access
+- if you like to access this in public this is the address - https://dog-api-prework.netlify.app/
+
+
 Note: API key is required for breed data in the TheDogAPI. Without it, images may load but breeds and detail info won't.
 
 ## Endpoints Used
